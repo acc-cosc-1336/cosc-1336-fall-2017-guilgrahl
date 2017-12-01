@@ -11,7 +11,7 @@ class Student(Person):
 
     def __str__(self):
 
-        return str(self.first_name) + ' ' + str(self.last_name) + '\t'
+        return 'Student ID: ' + str(self.student_id) + ' - ' + str(self.first_name) + ' ' + str(self.last_name) + '\t'
 
     def display(self):
         print(self.first_name + ' ' + self.last_name)
