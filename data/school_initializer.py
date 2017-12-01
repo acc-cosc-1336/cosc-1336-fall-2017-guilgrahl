@@ -1,14 +1,32 @@
-from professor import Professor
-from student import Student
-from course import Course
-from enrollment import Enrollment
+from model.enrollment import Enrollment
+from model.professor import Professor
+from model.student import Student
+from model.course import Course
 
 class SchoolInitializer:
 
     def __init__(self):
+        self.students = {}
+
+        #add to student dictionary
+        s = Student(1, "Carson", "Alexande#r", "09012005")
+        self.students[s.student_id] = s
+        s = Student(2, "Meredith", "Alonso", "09022002")
+        self.students[s.student_id] = s
+        s = Student(3, "Arturo", "Anand", "09032003")
+        self.students[s.student_id] = s
+        s = Student(4, "Gytis", "Barzdukas", "09012001")
+        self.students[s.student_id] = s
+        s = Student(5, "Peggy", "Justice", "09012001")
+        self.students[s.student_id] = s
+        s = Student(6, "Laura", "Norman", "09012003")
+        self.students[s.student_id] = s
+        s = Student(7, "Nino", "Olivetto", "09012005")
+        self.students[s.student_id] = s
 
         self.professors = {}
-         #professor_id   first_name   last_name  hire_date
+
+        #professor_id   first_name   last_name  hire_date
         p = Professor(1, "Kim", "Abercrombie", "1995-03-11")
         self.professors[p.professor_id] = p
 
@@ -24,26 +42,6 @@ class SchoolInitializer:
         p = Professor(5, "Roger", "Zheng", "2004-02-12")
         self.professors[p.professor_id] = p
 
-
-        self.students = {}
-
-        #add to student dictionary
-        s = Student(1, "Carson", "Alexander", "09012005")
-        self.students[s.student_id] = s
-        s = Student(2, "Meredith", "Alonso", "09022002")
-        self.students[s.student_id] = s
-        s = Student(3, "Arturo", "Anand", "09032003")
-        self.students[s.student_id] = s
-        s = Student(4, "Gytis", "Barzdukas", "09012001")
-        self.students[s.student_id] = s
-        s = Student(5, "Peggy", "Justice", "09012001")
-        self.students[s.student_id] = s
-        s = Student(6, "Laura", "Norman", "09012003")
-        self.students[s.student_id] = s
-        s = Student(7, "Nino", "Olivetto", "09012005")
-        self.students[s.student_id] = s
-
-
         self.courses = {}
 
         #add to course dictionary
@@ -55,11 +53,11 @@ class SchoolInitializer:
         self.courses[c.course_id] = c
         c = Course(1045, "Calculus", 4, self.professors[4])
         self.courses[c.course_id] = c
-        c = Course(3141, "Trigonometry", 4, self.professors[5])
+        c = Course(3141, "Trigonometry", 4, self.professors[2])
         self.courses[c.course_id] = c
-        c = Course(2021, "Composition", 3, self.professors[1])
+        c = Course(2021, "Composition", 3, self.professors[5])
         self.courses[c.course_id] = c
-        c = Course(2042, "Literature", 4, self.professors[2])
+        c = Course(2042, "Literature", 4, self.professors[1])
         self.courses[c.course_id] = c
 
 

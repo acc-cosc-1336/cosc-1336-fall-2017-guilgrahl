@@ -5,21 +5,22 @@ class SchoolDB:
 
     def __init__(self, school_initializer):
 
-        self.file_name = r'enroll.dat'
         self.school_initializer = school_initializer
-        self.data = self.school_initializer.enrollments
+        self.enrollments = {}
+        self.file_name = r".\data\enroll.dat"
         self.load_data()
 
     def load_data(self):
 
         if (isfile(self.file_name)):
             self.file = open(self.file_name, 'rb')
-            self.data = pickle.load(self.file)
+            self.enrollments = pickle.load(self.file)
             self.file.close()
+        else:
+            self.enrollments = self.school_initializer.enrollments
 
     def save_data(self):
 
         self.file = open(self.file_name, 'wb')
-        pickle.dump(self.data, self.file)
+        pickle.dump(self.enrollments, self.file)
         self.file.close()
-

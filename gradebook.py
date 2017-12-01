@@ -1,114 +1,67 @@
-
-from transcript import Transcript
-from school_initializer import SchoolInitializer
-from school_db import SchoolDB
+from model.transcript import Transcript
+from data.school_db import SchoolDB
+from data.school_initializer import SchoolInitializer
 
 class Gradebook:
 
-    def __init__(self, schooldb):
+    def __init__(self, school_db):
 
-        self.school_initializer = SchoolInitializer()
-        self.students = self.school_initializer.students
-        self.courses = self.school_initializer.courses
-        self.professors = self.school_initializer.professors
-        self.school_db = SchoolDB(self.school_initializer)
-        self.schooldb = schooldb
-
-
-
-    def update_grade(self):
-
-        enroll_id = int(input('Enter the enrollment ID: '))
-
-        grade = input('Enter the grade: ')
-
-        self.school_db.data[enroll_id].setGrade(grade)
-
-    def display_transcript(self):
-        student_id = int(input('Please enter student ID: '))
-        #Transcript object
-        self.transcript = Transcript(self.school_db.data, student_id)
-        self.transcript.print_transcript()
-
-    def print_gpa(self, student):
-
-        grade = {}
-        credit_points_total = 0
-        credit_hours_total = 0
-
-        index = 0
-        for key in self.school_db.data:
-            if self.school_db.data[key].student.student_id == student:
-                #print(key, self.enrollments[key])
-
-                grade[index] = self.school_db.data[key].grade
-                credit_points_total += self.get_credit_points(grade[index])
-                credit_hours_total += self.school_db.data[key].course.credit_hour
-                index += 1
-
-
-        if not(credit_hours_total == 0 or credit_points_total == 0):
-            gpa = credit_points_total / credit_hours_total
-        else:
-            gpa = 0
-
-        return gpa
-
-
-    def get_credit_points(self, letter_grade):
-
-        if letter_grade == 'A':
-            number_grade = 4
-        elif letter_grade == 'B':
-            number_grade = 3
-        elif letter_grade == 'C':
-            number_grade = 2
-        elif letter_grade == 'D':
-            number_grade = 1
-        else:
-            number_grade = 0
-
-        return number_grade
-
+        self.school_db = school_db
+        self.enrollments = school_db.enrollments
+        self.students = school_db.school_initializer.students
 
     def main(self):
 
+        choice = ''
 
-        selection = 0
-        while selection != 6:
-            print('ACADEMIC MAIN MENU')
+        while choice != 'e':
             print()
-            print('1. Update Grade')
-            print('2. Print Student GPA')
-            print('3. Print Student Transcript')
-            print('4. Print All Enrollments')
-            print('5. Save All Enrollments')
-            print('6. Exit')
-            selection = int(input('Selection: '))
+            choice = self.__display_menu()
 
-            #Menu options
-            if selection == 1:
-                self.update_grade()
+            if choice == '1':
 
-            elif selection == 2:
-                student = int(input('Please enter student ID: '))
-                print(self.print_gpa(student))
+                enroll_key = int(input("Enter enroll key"))
 
-            elif selection == 3:
-                self.display_transcript()
+                if enroll_key in self.enrollments:
+                    enroll = self.enrollments.get(enroll_key)
 
-            elif selection == 4:
-               # self.print_enrollments()
-                for key in self.school_db.data:
-                    print(self.school_db.data[key].display())
+                    grade = input("Enter grade: ")
+                    enroll.grade = grade
 
+                else:
+                    print("Key doesn't exist")
 
-            elif selection == 5:
+            elif choice == '2':
+
+                student_id = int(input("Enter student id: "))
+
+                if student_id in self.students:
+                    transcript = Transcript(self.enrollments)
+                    student = self.students.get(student_id)
+                    transcript.print_transcript(student)
+
+            elif choice == '3':
+
+                for enrollment in self.enrollments.values():
+                    enrollment.print_record()
+
+            elif choice == '4':
+
                 self.school_db.save_data()
 
+            print()
 
-schooldb = SchoolDB(SchoolInitializer())
-gradebook = Gradebook(schooldb)
+    def __display_menu(self):
 
+        print("Academic Main Menu")
+        print()
+        print("1) Update Grade")
+        print("2) Print Student GPA")
+        print("3) Print All Enrollments")
+        print("4) Save Data")
+        print()
+        return input("Enter 1, 2, 3, or e to exit")
+
+db = SchoolDB(SchoolInitializer())
+gradebook = Gradebook(db)
 gradebook.main()
-
